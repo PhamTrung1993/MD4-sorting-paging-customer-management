@@ -16,7 +16,8 @@ public class ProvinceFormatter implements Formatter<Province> {
     public ProvinceFormatter(IProvinceService provinceService) {
         this.provinceService = provinceService;
     }
-
+//Phương thức parse() chuyển một String sang kiểu dữ liệu đích sử dụng một Locale xác định.
+// Phương thức print() thì thực hiện công việc ngược lại, chuyển đổi từ một đối tượng của kiểu dữ liệu đích sang String.
     @Override
     public Province parse(String text, Locale locale) throws ParseException {
         Optional<Province> provinceOptional = provinceService.findById(Long.parseLong(text));

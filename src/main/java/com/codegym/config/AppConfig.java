@@ -1,6 +1,7 @@
 package com.codegym.config;
 
 
+import com.codegym.formatter.ProvinceFormatter;
 import com.codegym.service.customer.CustomerService;
 import com.codegym.service.customer.ICustomerService;
 import com.codegym.service.province.IProvinceService;
@@ -15,6 +16,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.data.web.config.EnableSpringDataWebSupport;
+import org.springframework.format.FormatterRegistry;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
@@ -95,7 +97,7 @@ public class AppConfig implements WebMvcConfigurer, ApplicationContextAware {
     }
 
     @Bean
-    public LocalContainerEntityManagerFactoryBean entityManagerFactoryBean() {
+    public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
         LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
         em.setDataSource(dataSource());
         em.setPackagesToScan(new String[]{"com.codegym.model"});
@@ -119,7 +121,12 @@ public class AppConfig implements WebMvcConfigurer, ApplicationContextAware {
         return transactionManager;
     }
 
+//    Đăng ký formatter bằng cách override phương thức addFormatter() trong lớp ApplicationConfig
+    @Override
+    public void addFormatters(FormatterRegistry registry) {
+        registry.addFormatter(new ProvinceFormatter(applicationContext.getBean(ProvinceService.class)));
 
+    }
     @Bean
     public ICustomerService customerService() {
         return new CustomerService();
